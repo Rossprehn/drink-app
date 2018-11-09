@@ -1,28 +1,101 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id='app'>
+    <Header />
+    <main v-else>
+      <img :src=leftLion alt='lion outline' class='lion-anim' id='lion-left'>
+      <div id='app-body'>
+        <DrinkCard :recipe='currentRecipe'/>
+      </div>
+    </main>
+    <Footer />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import DrinkCard from './components/DrinkCard'
+import Header from './components/Header'
+import Footer from './components/Footer'
 
 export default {
-  name: 'app',
+  name: 'App',
   components: {
-    HelloWorld
+    DrinkCard,
+    ButtonContainer,
+    Header,
+    Footer
+  },
+  data() {
+    return {
+      apiURL: 'https://drinks-backend.herokuapp.com/',
+      comments: [],
+      drinkData: [],
+      currentRecipe: {},
+      currentComments: [],
+      lastTenDrinks: []
+    }
+  },
+  mounted() {
+    this.getDrinks()
+  },
+  methods: {
+    getDrinks() {
+      fetch(this.apiURL)
+        .then(res => res.json())
+        .then(res => {
+          this.recipeData = res.recipes
+          this.chooseRandomRecipe()
+          this.getComments()
+          return res
+        })
+    },
+    getComments() {
+      fetch(this.apiURL + 'comments')
+        .then(res => res.json())
+        .then(json => {
+          this.comments = json.comments
+          this.getCommentsForCurrentDrink()
+          return json
+        })
+    },
+    chooseRandomRecipe() {
+      let tempNum = Math.floor(Math.random() * this.recipeData.length)
+      let drinkId = this.recipeData[tempNum].drink_id
+      if(this.lastTenDrinks.includes(drinkId)){
+        console.log('repeat', drinkId)
+        this.chooseRandomRecipe()
+      } else {
+        this.setLengthOfLastTenDrinks()
+        this.lastTenDrinks.push(drinkId)
+        this.currentRecipe = this.recipeData[tempNum]
+        return this.lastTenDrinks
+      }
+    },
+    setLengthOfLastTenDrinks() {
+      if(this.lastTenDrinks.length > 25){
+        this.lastTenDrinks.shift()
+        this.setLengthOfLastTenDrinks()
+      }
+    },
+    getCommentsForCurrentDrink() {
+      return this.currentComments = this.comments.filter(comment => comment.drink_id === this.currentRecipe.drink_id)
+    }
   }
 }
 </script>
 
 <style>
+
+@import url('https://fonts.googleapis.com/css?family=Averia+Serif+Libre|Montserrat');
+
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: center;
+  line-height: 1.6;
+  width: 100vw;
+  min-height: 100vh;
 }
+
 </style>
