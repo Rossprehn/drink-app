@@ -1,8 +1,17 @@
 <template>
   <div id='app'>
     <Header />
+     <div v-if="loading" id="loading-div">
+      <img :src=leftCocktail alt="lion outline" class="cockTail-line" id="cockTail-left">
+      <img :src=tigerOutline alt="tiger outline" id="tiger-outline">
+      <div id="loading-button-div">
+        <img @click="loading = !loading" @mouseover="hoverEnterBtnSrc" @mouseout="changeEnterBtnSrc" :src=buttonOutline alt="" id="enter-btn">
+      </div>
+      <img @click="loading = !loading" @mouseover="hoverEnterBtnSrc" @mouseout="changeEnterBtnSrc" :src=buttonOutline alt="" id="enter-btn-small">
+      <img :src=rightcockTail alt="cockTail outline" class="cockTail-line" id="cockTail-right">
+    </div>
     <main v-else>
-      <img :src=leftLion alt='lion outline' class='lion-anim' id='lion-left'>
+      <img :src=leftCocktail alt='cockTail outline' class='cockTail-line' id='cockTail-left'>
       <div id='app-body'>
         <DrinkCard :recipe='currentRecipe'/>
       </div>
