@@ -2,7 +2,7 @@
   <div id='app'>
     <Header />
      <div v-if="loading" id="loading-div">
-      <img :src=leftCocktail alt="lion outline" class="cockTail-line" id="cockTail-left">
+      <img :src=leftCocktail alt="cockTail outline" class="cockTail-line" id="cockTail-left">
       <img :src=tigerOutline alt="tiger outline" id="tiger-outline">
       <div id="loading-button-div">
         <img @click="loading = !loading" @mouseover="hoverEnterBtnSrc" @mouseout="changeEnterBtnSrc" :src=buttonOutline alt="" id="enter-btn">

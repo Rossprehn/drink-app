@@ -1,11 +1,10 @@
 <template>
   <div id="ButtonContainer">
     <button v-on:click="showAddCommentComponent" class="top-button" type="button" name="addComment">{{ showCommentsToggle ? "Add a Comment" : "Show Comments" }}</button>
-    <button v-on:click="getFact" type="button" id="new-fact" class="top-button" name="newFact">New Fact</button>
-    <button v-on:click="showDonationComponent" class="top-button" type="button" name="button">{{ donateToggle ? "Donate Later" : "Donate Now" }}</button>
+    <button v-on:click="getFact" type="button" id="new-recipe" class="top-button" name="newFact">New Recipe</button>
     <div class="dynamic-display-options">
-      <CommentContainer :commentToggle="commentToggle" :donateToggle="donateToggle" :deleteToggle="deleteToggle" :updateToggle="updateToggle" :currentComments="currentComments"/>
-      <NewCommentForm :commentToggle="commentToggle" :apiURL="apiURL" :animalFact="fact" :getComments="getComments" :showAddCommentComponent="showAddCommentComponent"/>
+      <CommentContainer :commentToggle="commentToggle" :deleteToggle="deleteToggle" :updateToggle="updateToggle" :currentComments="currentComments"/>
+      <NewCommentForm :commentToggle="commentToggle" :apiURL="apiURL" :animalFact="recipe" :getComments="getComments" :showAddCommentComponent="showAddCommentComponent"/>
       <DeleteComment :deleteToggle="deleteToggle" :currentComments="currentComments" :getComments="getComments" :apiURL="apiURL" :showCommentComponent="showCommentComponent"/>
       <UpdateComment :updateToggle="updateToggle" :currentComments="currentComments" :getComments="getComments" :apiURL="apiURL" :showCommentComponent="showCommentComponent"/>
     </div>
@@ -18,13 +17,18 @@
 
 <script>
 import CommentContainer from "./CommentContainer"
-
+import NewCommentForm from "./NewCommentForm"
+import DeleteComment from "./DeleteComment"
+import UpdateComment from "./UpdateComment"
 
 export default {
   name: "ButtonContainer",
-  props: ["getFacts", "apiURL", "fact", "currentComments", "getComments"],
+  props: ["getRecipe", "apiURL", "recipe", "currentComments", "getComments"],
   components: {
-    CommentContainer
+    CommentContainer,
+    NewCommentForm,
+    DeleteComment,
+    UpdateComment
   },
   data() {
     return {
